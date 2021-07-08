@@ -27,8 +27,8 @@ class SongDetails(APIView):
 
     def get_object(self, pk):
         try:
-            return Product.objects.get(pk=pk)
-        except Product.DoesNotExist:
+            return Song.objects.get(pk=pk)
+        except Song.DoesNotExist:
             raise Http404
 
     def get(self, request, pk):
@@ -45,8 +45,8 @@ class SongDetails(APIView):
        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        product = self.get_object(pk)
-        product.delete()
+        song = self.get_object(pk)
+        song.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def likes(self, request, pk):
