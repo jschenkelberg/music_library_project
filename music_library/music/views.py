@@ -1,9 +1,6 @@
 from django.shortcuts import render
 from .models import Song
 from .serializers import SongSerializer
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -49,11 +46,13 @@ class SongDetails(APIView):
         song.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    def likes(self, request, pk):
+    def patch(self, request, pk):
         song = self.get_object(pk)
-        serializer = SongSerializer(song, data=request.data)
+        serializer = SongSerializer(song, data=request.data, partial=True)
         if serializer.is_valid():
             song.likes += 1
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
